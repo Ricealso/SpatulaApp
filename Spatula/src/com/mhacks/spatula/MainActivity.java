@@ -58,6 +58,7 @@ public class MainActivity extends Activity {
 
 		// Instantiate Layout Objects
 		gBtnLogin = (Button) findViewById(R.id.btn_login);
+		gBtnSignup = (Button) findViewById(R.id.btn_signup);
 		gET_UN = (EditText) findViewById(R.id.et_uname);
 		gET_PW = (EditText) findViewById(R.id.et_pword);
 
@@ -115,13 +116,13 @@ public class MainActivity extends Activity {
 				Log.i(TAG, "**Result: " + result);
 				//if (!checkLogin(result)) {
 				//} else {
-					JSONObject jsonObject = new JSONObject(result);
+					/*JSONObject jsonObject = new JSONObject(result);
 					// Getting data from this JSON
 					intUID = jsonObject.getInt("uid");
 					intPetID = jsonObject.getInt("petid");
 					intExperience = jsonObject.getInt("experience");
 					intHappiness = jsonObject.getInt("happiness");
-					strPetName = jsonObject.getString("petname");
+					strPetName = jsonObject.getString("petname");*/
 				//}
 
 			} catch (Exception e) {
