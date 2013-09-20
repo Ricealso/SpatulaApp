@@ -13,7 +13,7 @@
         android:id="@+id/et_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:orientation="vertical" >
         
         
@@ -75,38 +75,5 @@
     </LinearLayout>
     
 
-    <LinearLayout
-        android:id="@+id/output_container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_container"
-        android:layout_weight="1"
-        android:orientation="vertical" >
-        
-        
-        <TextView
-            android:id="@+id/result1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Result 1 Here." />
-
-        <TextView
-            android:id="@+id/result2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Result 2 Here." />
-
-        <TextView
-            android:id="@+id/result3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Result 3 Here." />
-
-        <TextView
-            android:id="@+id/result4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Result 4, temp" />
-    </LinearLayout>
 
 </LinearLayout>

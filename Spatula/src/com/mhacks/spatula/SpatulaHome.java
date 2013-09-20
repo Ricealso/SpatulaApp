@@ -16,6 +16,9 @@ public class SpatulaHome extends Activity {
 	Button gBtnGetData;
 	TextView gTV1,gTV2,gTV3,gTV4;
 	
+	// Result Data Vars.
+		int intUID, intPetID, intHappiness, intExperience, intResult;
+		String strPetName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
