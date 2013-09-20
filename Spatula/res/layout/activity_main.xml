@@ -44,7 +44,7 @@
             android:layout_marginRight="25dip"
             android:gravity="center_horizontal"
             android:hint="Password."
-            android:padding="5dip" />
+            android:padding="5dip"/>
     </LinearLayout>
 
     <LinearLayout

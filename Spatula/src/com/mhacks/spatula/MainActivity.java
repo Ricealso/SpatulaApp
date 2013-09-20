@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.Button;
@@ -47,9 +48,12 @@ public class MainActivity extends Activity {
 	// Layout Objects
 	Button gBtnLogin, gBtnSignup;
 	EditText gET_UN, gET_PW;
-	
-	//Http Objects
+
+	// Http Objects
 	String gStrResult;
+	JSONObject gJsonObject;
+	int gUID;
+	String gType,gSuccess;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,12 @@ public class MainActivity extends Activity {
 		gET_UN = (EditText) findViewById(R.id.et_uname);
 		gET_PW = (EditText) findViewById(R.id.et_pword);
 
+		
+		if(D){//to prevent typing credentials all the time
+			gET_UN.setText("abc@def.ghi");
+			gET_PW.setText("jklmnop");	
+		}
+		
 		// Button Listeners
 		gBtnLogin.setOnClickListener(listener);
 		gBtnSignup.setOnClickListener(listener);
@@ -73,6 +83,27 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()){
+		case R.id.action_settings:
+
+			Intent i = new Intent(getApplicationContext(),
+					SpatulaHome.class);// use this to bypass server not up
+			i.putExtra("uid",4);
+			startActivity(i);
+			break;
+		default:
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
+
 
 	View.OnClickListener listener = new View.OnClickListener() {
 		@Override
@@ -90,11 +121,12 @@ public class MainActivity extends Activity {
 				gBtnLogin.setEnabled(false); // So you click a million requets
 				break;
 			case R.id.btn_signup:
-				/*MakeConnect mSignupConnect = new MakeConnect(MainActivity.this,
-						"signup", gET_UN.getText().toString(), gET_PW.getText()
-								.toString());
-				mSignupConnect.execute("");*/
-				startActivity(new Intent("SpatulaHome.class"));//use this to bypass server not up
+				
+				  MakeConnect mSignupConnect = new
+				  MakeConnect(MainActivity.this, "signup",
+				  gET_UN.getText().toString(), gET_PW.getText() .toString());
+				  mSignupConnect.execute("");
+				 gBtnSignup.setEnabled(false);
 				break;
 			default:
 				break;
@@ -134,9 +166,18 @@ public class MainActivity extends Activity {
 				gStrResult = SimpleConnect(nameValuePairs);// Request
 				if (D)
 					Log.i(TAG, "**Result: " + gStrResult);
-
-				// Verify credentials
 				
+				/*//TEST
+				JSONObject gJO = new JSONObject(gStrResult);
+				gType = gJO.getString("new");
+				Log.i(TAG,"test json inside thread: " + gType);
+				//END TEST
+*/				
+				
+				gJsonObject = new JSONObject(gStrResult);
+				
+				Log.i(TAG,"Past json made.");
+				// Verify credentials
 
 				// if (!checkLogin(result)) {
 				// } else {
@@ -151,7 +192,7 @@ public class MainActivity extends Activity {
 				// }
 
 			} catch (Exception e) {
-				Log.e(TAG, "**Error!!", e);
+				Log.e(TAG, "**Error in Background!!", e);
 				exception = e;
 			}// end catch
 
@@ -160,24 +201,35 @@ public class MainActivity extends Activity {
 
 		String SimpleConnect(ArrayList<NameValuePair> nvp)
 				throws ParseException, IOException {
+			
+			Log.i(TAG,"NVP: " + nvp.get(1).toString() + ", NVP2: " + nvp.get(2).toString());
+			
 			// Request
 			HttpParams httpParameters = new BasicHttpParams();
-
+			Log.i(TAG,"Point 1.");
 			// Timeouts
 			HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
 			HttpConnectionParams.setSoTimeout(httpParameters, 15000);
-
+			Log.i(TAG,"Point 2.");
 			HttpClient httpclient = new DefaultHttpClient(httpParameters);
 			HttpPost httppost = new HttpPost(
 					"http://bmyf.clanslots.com/drupal/login.php");
+			Log.i(TAG,"Point 3.");
 			httppost.setEntity(new UrlEncodedFormEntity(nvp));
+			Log.i(TAG,"Point 4.");
 			HttpResponse response = httpclient.execute(httppost);
+			Log.i(TAG,"Point 5.");
 			HttpEntity entity = response.getEntity();
 
-			return EntityUtils.toString(entity);
+			Log.i(TAG,"Response: " + response.toString() + " \n Entity: " + entity.toString());
+			
+			String st = EntityUtils.toString(entity);
+			Log.i(TAG,"TEST: "+st);
+			return st;
 		}// end SimpleConnect()
 
 		void checkLogin(String s) {
+
 			if (s.equals("0")) {
 				Log.i(TAG, "Failed Login.");
 				Toast.makeText(mContext,
@@ -194,9 +246,68 @@ public class MainActivity extends Activity {
 			}
 		}// end checkLogin()
 
+		void checkLogin() {
+			String type;
+			int verified;
+			try {
+				type = gJsonObject.getString("type");
+				verified = gJsonObject.getInt("success");
+
+				Log.i(TAG,"Type: " + type + ", Success: " + verified);
+				if (type.equals("login")) {
+					if (verified == 0)
+						loginFailed();
+					if (verified == 1)
+						loginSuccess(gJsonObject.getString("uid"));
+				if (type.equals("signup")){
+					if (verified == 0)
+						signupFailed();
+					if (verified ==1)
+						signupSuccess();
+				}
+				}// end if login
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}// end checkLogin()
+
+		void loginFailed() {
+			Log.i(TAG, "Failed Login.");
+			Toast.makeText(mContext,
+					"Login failed. Please try again or sign up.",
+					Toast.LENGTH_LONG).show();
+			gBtnLogin.setEnabled(true); // allow them to re-attempt login
+		}// end loginFailed()
+
+		void loginSuccess(String uid) {
+			Log.i(TAG, "Login Success!");
+			Intent i = new Intent(getApplicationContext(),SpatulaHome.class);
+			i.putExtra("uid", uid);
+			startActivity(i);
+			gBtnLogin.setEnabled(true); // allow them to re-attempt login
+		}// end loginSuccess()
+		
+		void signupFailed(){
+			Log.i(TAG, "Signup Failed");
+			Toast.makeText(mContext,
+					"Server failure, account not created.",
+					Toast.LENGTH_LONG).show();
+			gBtnSignup.setEnabled(true);
+		}//end signupFailed()
+		
+		void signupSuccess(){
+			Log.i(TAG,"Sign up Success!");
+			Toast.makeText(mContext,
+					"Account Created!",
+					Toast.LENGTH_LONG).show();
+		}//end signupSuccess()
+
 		@Override
 		protected void onPostExecute(Boolean valid) {
-			checkLogin(gStrResult);
+			//checkLogin(gStrResult);
+			Log.i(TAG,"onPostExecute");
+			checkLogin();
 			gBtnLogin.setEnabled(true);
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(), 500).show();
