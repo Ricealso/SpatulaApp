@@ -4,10 +4,22 @@
     android:layout_height="wrap_content"
     android:padding="5dp" 
     android:orientation="vertical"
-    android:id="@+id/ll_container">
+    android:id="@+id/ll_container"
+    android:layout_gravity="center_horizontal">
  
+    
+    
+    <TextView
+        android:id="@+id/list_pet_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pet Name"
+        android:layout_marginTop="5px"
+        android:textSize="25dip"
+        android:layout_gravity="center" >
+    </TextView>
     <ImageView
-        android:id="@+id/list_image"
+        android:id="@+id/list_pet_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginRight="10dp"
@@ -16,10 +28,10 @@
     </ImageView>
  
     <TextView
-        android:id="@+id/list_text"
+        android:id="@+id/list_pet_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sample"
+        android:text="Happiness:"
         android:layout_marginTop="5px"
         android:textSize="25dip"
         android:layout_gravity="center" >

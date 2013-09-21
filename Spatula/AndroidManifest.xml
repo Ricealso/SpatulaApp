@@ -44,6 +44,12 @@
 			</intent-filter>
         </activity>
         
+         <activity
+            android:name="com.mhacks.spatula.PetActivity">
+            <intent-filter>
+			</intent-filter>
+        </activity>
+         
     </application>
 
 </manifest>

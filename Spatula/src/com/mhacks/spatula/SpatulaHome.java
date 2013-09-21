@@ -66,6 +66,10 @@ public class SpatulaHome extends Activity {
 				Intent j = new Intent(getBaseContext(),StoreActivity.class);
 				startActivity(j);
 			}
+			if((((TextView) ((LinearLayout) v).getChildAt(1)).getText().equals("Pets"))){
+				Intent j = new Intent(getBaseContext(),PetActivity.class);
+				startActivity(j);
+			}
 				Log.i(TAG,"Point3");
 			}//end click
 
