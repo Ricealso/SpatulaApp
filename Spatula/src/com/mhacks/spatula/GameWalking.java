@@ -43,7 +43,7 @@ public class GameWalking extends Activity implements SensorEventListener {
 	private Sensor mAccelerometer;
 
 	// Pertinant
-	int counter=1 , sessionCount = 0, imageflip = 0;
+	int counter=0 , sessionCount = 0, imageflip = 0;
 
 	// Layout Objects
 	TextView gTVsteps, gTVhappiness, gTVtest1;
@@ -196,14 +196,14 @@ public class GameWalking extends Activity implements SensorEventListener {
 	}
 
 	void updateCounter(int mode) {
-		Log.i(TAG,"SessionCount: "+sessionCount +", counter: " + counter);
+		Log.i(TAG,"SessionCount: "+sessionCount +", counter: " + counter + ", mode: " + mode);
 		
 		switch (mode) {
 		case 0: // from reaching 50 steps
 			counter++;// I added this!
+			sessionCount++;
 			updateGUI();// and this too!
-			if ((counter / 50) == 0) {
-				sessionCount += counter;
+			if ((counter % 50) == 0) {
 				counter = 0;
 				sendGameUpdates(50);
 			}
