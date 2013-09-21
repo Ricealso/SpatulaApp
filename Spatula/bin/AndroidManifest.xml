@@ -38,6 +38,12 @@
 			</intent-filter>
         </activity>
         
+         <activity
+            android:name="com.mhacks.spatula.StoreActivity">
+            <intent-filter>
+			</intent-filter>
+        </activity>
+        
     </application>
 
 </manifest>

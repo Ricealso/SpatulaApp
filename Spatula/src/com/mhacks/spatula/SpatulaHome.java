@@ -58,9 +58,13 @@ public class SpatulaHome extends Activity {
 			   Toast.makeText(getApplicationContext(),
 				((TextView) ((LinearLayout) v).getChildAt(1)).getText(), Toast.LENGTH_SHORT).show();
 			   Log.i(TAG,"Point2");
-			if(((TextView) ((LinearLayout) v).getChildAt(1)).getText().equals("Games")){
+			if(((TextView) ((LinearLayout) v).getChildAt(1)).getText().equals("Exercise")){
 				Intent i = new Intent(getBaseContext(),GameWalking.class);
 				startActivity(i);
+			}
+			if((((TextView) ((LinearLayout) v).getChildAt(1)).getText().equals("Store"))){
+				Intent j = new Intent(getBaseContext(),StoreActivity.class);
+				startActivity(j);
 			}
 				Log.i(TAG,"Point3");
 			}//end click
